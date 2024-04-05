@@ -12,7 +12,7 @@ public class SeedStarterAddForm {
     private LocalDateTime datePlanted;
     private boolean covered;
     private Type type;
-    private String features; // FeatureType로 변경
+    private List<Feature> features; // FeatureType로 변경
     private String substrate;
     private String fertilizer;
     private String phCorrector;
