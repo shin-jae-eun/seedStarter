@@ -20,7 +20,11 @@ public class SeedStarterService {
     public List<SeedStarter> findWithDetail(){
         return this.seedStarterRepository.findWithDetail();
     }
-//    @Autowired
+    public void save(SeedStarter seedStarter){
+        seedStarterRepository.save(seedStarter);
+    }
+
+    //    @Autowired
 //   public SeedStarterService(SeedStarterRepository seedStarterRepository) {
 //        this.seedStarterRepository = seedStarterRepository;
 //    }

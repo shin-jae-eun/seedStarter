@@ -1,5 +1,7 @@
 package com.example.seedstarter.controller;
 
+import com.example.seedstarter.entity.Feature;
+import com.example.seedstarter.entity.FeatureType;
 import com.example.seedstarter.entity.SeedStarter;
 import com.example.seedstarter.entity.SeedStarterAddForm;
 import com.example.seedstarter.service.SeedStarterService;
@@ -11,21 +13,23 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Controller
 public class SeedStarterMngController {
     private final SeedStarterService seedStarterService;
     private final ObjectMapper mapper;
+
     @ModelAttribute
-    public void addttribute(Model model){
+    public void addAttribute(Model model){
         model.addAttribute("seedStarterAddForm", new SeedStarterAddForm());
     }
+
     @RequestMapping({"/", "/seedstartermng"})
-    public String showSeedstarters(final SeedStarter seedStarter, Model model) throws JsonProcessingException {
+    public String showSeedstarters(Model model) throws JsonProcessingException {
         List<SeedStarter> seedStarterWithFeature = seedStarterService.findWithFeature();
         List<SeedStarter> seedStarterWithDetail = seedStarterService.findWithDetail();
 
@@ -33,16 +37,26 @@ public class SeedStarterMngController {
         model.addAttribute("seedStarterWithDetail", seedStarterWithDetail);
 
         return "seedstartermng";
-
     }
+
     @PostMapping("/seedstartermng")
     public String addSeedStarter(@ModelAttribute SeedStarterAddForm seedStarterAddForm, Model model){
-        System.out.println("seedStarterAddForm.getDatePlanted() = " + seedStarterAddForm.getDatePlanted());
-        System.out.println("seedStarterAddForm.isCovered() = " + seedStarterAddForm.isCovered());
-        System.out.println("seedStarterAddForm.getType() = " + seedStarterAddForm.getType());
-        System.out.println("seedStarterAddForm.getFertilizer() = " + seedStarterAddForm.getFertilizer());
-        System.out.println("seedStarterAddForm.getSubstrate() = " + seedStarterAddForm.getSubstrate());
-        System.out.println("seedStarterAddForm.getPhCorrector() = " + seedStarterAddForm.getPhCorrector());
+        SeedStarter seedStarter = toSeedStarter(seedStarterAddForm);
+        seedStarterService.save(seedStarter); // 저장 메소드 호출
+
         return "redirect:/";
     }
+
+    // SeedStarterAddForm 객체를 SeedStarter 객체로 변환하는 메소드
+    private SeedStarter toSeedStarter(SeedStarterAddForm seedStarterAddForm){
+        SeedStarter seedStarter = new SeedStarter();
+        seedStarter.setDatePlanted(seedStarterAddForm.getDatePlanted());
+        seedStarter.setCovered(seedStarterAddForm.isCovered());
+        seedStarter.setType(seedStarterAddForm.getType());
+        seedStarter.setFeatures(seedStarterAddForm.getFeatures());
+
+        return seedStarter;
+    }
+
+
 }
