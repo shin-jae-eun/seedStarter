@@ -10,9 +10,3 @@ Seed Starter 프로그램**
 **💡3. 완성 결과물**
 
 ![image](https://github.com/shin-jae-eun/seedStarter/assets/129717192/fa93f54b-6ac6-44b5-8789-4a3d8878ecfd)
-
-
-**💡4. 기술블로그**
-
-자세한 내용은 기술블로그를 참조해주세요 
-https://shinjaeeun.tistory.com/64
